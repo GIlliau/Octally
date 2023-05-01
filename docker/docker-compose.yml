@@ -1,0 +1,43 @@
+version: '3.7'
+services:
+    nginx:
+        build:
+            context: ./dev
+            dockerfile: nginx.docker
+        volumes:
+            - ../:/app
+        depends_on:
+            - php-fpm
+        ports:
+            - "8080:80"
+
+    php-fpm:
+        build:
+            context: ./dev
+            dockerfile: php-fpm.docker
+        volumes:
+            - ../:/app
+
+    mysql:
+        image: mysql
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_USER: 'user'
+            MYSQL_PASSWORD: 'test'
+            MYSQL_DATABASE: 'database'
+            MYSQL_TCP_PORT: 3306
+
+    mysql2:
+        image: mysql
+        ports:
+            - "33061:33061"
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_USER: 'user2'
+            MYSQL_PASSWORD: 'test2'
+            MYSQL_DATABASE: 'database2'
+            MYSQL_TCP_PORT: 33061
+
+

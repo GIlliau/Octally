@@ -1,0 +1,28 @@
+.wrapper {
+    min-height: 100vh;
+    height: auto !important;
+}
+.footer {
+    display: none;
+}
+.sidebar:before,
+.off-canvas-sidebar:before {
+    top: -4px;
+}
+.sidebar .nav li > a {
+    display: flex;
+    align-items: center;
+}
+.sidebar .nav li > a > p {
+    width: 100%;
+}
+.sidebar .nav li > a > span.badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    background-color: #ec250d;
+}
+.off-canvas-sidebar .nav .caret, .sidebar .nav .caret {
+    top: 18px;
+}
