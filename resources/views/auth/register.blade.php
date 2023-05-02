@@ -26,10 +26,6 @@
                                     <label for="exampleInputPassword1">Password confirm</label>
                                     <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password_confirmation" value="Qwerty12345">
                                 </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" name="remember">
-                                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                                </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>
