@@ -32,26 +32,8 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        $ticket = Ticket::find(7);
-        dd($ticket->admin());
-//        $admin = Admin::first();
-//        dd($admin->folders()->get()->toArray());
-
-//        $user = User::find(1);
-//        $perm = Permission::first();
-//        $user->givePermissionTo($perm);
-
-//        $role = Role::find(1);
-//        $role->givePermissionTo('edit articles');
-//        dd($role);
-
-//        $category = Category::get();
-//
-//        dd($category[0]->name);
-
-//        $user = User::first();
-
-//        $posts = DB::connection('mysql2')->table('posts')->get();
-//        dd($posts);
+        $admin = User::find(1);
+        $adminRole = \Spatie\Permission\Models\Role::find('1');
+        $admin->assignRole($adminRole);
     }
 }
