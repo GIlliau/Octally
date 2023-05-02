@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Traits\UploadImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use function PHPUnit\Framework\isNull;
 
 class HomeController extends Controller
 {
@@ -47,8 +48,10 @@ class HomeController extends Controller
         return redirect('/post');
     }
 
-    public function edit(Post $post)
+    public function edit(int $post)
     {
+        $post = $this->postRepository->getPostEditorView(Auth::id(), $post);
+
         return view('posts.edit', ['post' => $post]);
     }
 
@@ -56,11 +59,15 @@ class HomeController extends Controller
     {
         $data = $request->validated();
 
+        if (isset($data['image'])) {
+            $data['image'] = $this->uploadImage($request);
+        }
+
         $data['user_id'] = Auth::id();
 
         $this->postRepository->editPost($postId, Auth::id(), $data);
 
-        return redirect('/post');
+        return redirect()->back();
     }
 
     public function delete(int $postId)

@@ -12,25 +12,20 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Public</th>
-                        <th scope="col">Tittle</th>
-                        <th scope="col">Text</th>
-                        <th scope="col">Image</th>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($posts as $post)
+                    @foreach($users as $user)
                         <tr>
-                            <th scope="row"><a href="/post/open/{{$post->id}}">View</a></th>
-                            <td>{{$post->title}}</td>
-                            <td>{!! $post->preview !!}</td>
-                            <td><img src="/{{$post->image}}" style="max-height: 50px"></td>
+                            <th scope="row">{{$user->id}}</th>
+                            <td>{{$user->name}}</td>
+                            <td>{!! $user->email !!}</td>
                             <td class="d-flex">
-                                <a href="/post/edit/{{$post->id}}"
-                                   class="btn btn-info btn-sm"><i class="fas fa-pencil-alt"></i>
-                                    Edit</a>
-                                <form action="/post/delete/{{$post->id}}" method="post" style="display: flex">
+                                <form action="/user/delete/{{$user->id}}" method="post" style="display: flex">
                                     @csrf
                                     @method('delete')
                                     <button type="button" class="btn btn-danger btn-sm ml-2 delete-btn"
@@ -47,7 +42,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    {{ $posts->links() }}
+                    {{ $users->links() }}
                 </div>
             </div>
         </div>

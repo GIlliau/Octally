@@ -10,9 +10,21 @@ use App\Traits\CheckAccess;
 class PostRepository implements PostRepositoryInterface
 {
     use CheckAccess;
-    public function getPostById(int $id): object
+
+    public function getPostEditorView(int $userId, int $id)
     {
-        return Post::with('comment')->where('id', $id)->first();
+        $post = $this->getPostById($id);
+        $this->checkAccess($userId, $post);
+
+        return $post;
+    }
+
+    public function getPostPublicView(int $id)
+    {
+        $post = $this->getPostById($id);
+        $post->addView();
+
+        return $post;
     }
 
     public function getPostsByUser(int $userId, ?int $perPage = null): object
@@ -25,9 +37,16 @@ class PostRepository implements PostRepositoryInterface
         return Post::orderBy('id', 'desc')->paginate($perPage);
     }
 
+    public function search(string $text, ?int $perPage = null): object
+    {
+        return Post::where('title', 'LIKE', "%$text%")
+            ->where('text', 'LIKE', "%$text%")
+            ->paginate($perPage);
+    }
+
     public function getPostsByPopularity(?int $perPage = null): object
     {
-        return Post::orderBy('seen', 'desc')->paginate($perPage);
+        return Post::orderBy('seen', 'desc')->take(5)->get();
     }
 
     public function createPost(array $data): object
@@ -67,5 +86,10 @@ class PostRepository implements PostRepositoryInterface
         $this->checkAccess($userId, $comment);
 
         $comment->delete();
+    }
+
+    private function getPostById(int $id): object
+    {
+        return Post::with('comment')->where('id', $id)->first();
     }
 }

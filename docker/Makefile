@@ -1,4 +1,4 @@
-init: build up composer-install storage-chmod
+init: build up composer-install storage-chmod storage-link
 
 restart: down up
 
@@ -8,7 +8,6 @@ up:
 stop:
 	docker-compose stop
 
-down:
 	docker-compose down
 
 build:
@@ -28,6 +27,9 @@ app-shell:
 
 storage-chmod:
 	chmod -R 777 ../storage
+
+storage-link:
+    docker-compose exec php-fpm php artisan storage:link
 
 db-fresh:
 	docker-compose exec php-fpm php artisan migrate:fresh --seed

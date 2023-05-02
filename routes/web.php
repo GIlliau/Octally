@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/login', );
 Route::get('/', [BlogController::class, 'index']);
 Route::get('/post/open/{postId}', [BlogController::class, 'post']);
-Route::get('/user/{userId}/post', [BlogController::class, 'post']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/post', [HomeController::class, 'index']);
     Route::get('/post/create', [HomeController::class, 'create']);
@@ -27,8 +28,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/post/update/{postId}', [HomeController::class, 'update']);
     Route::delete('/post/delete/{postId}', [HomeController::class, 'delete']);
 
-    Route::post('/post/{postId}/comment/store', [BlogController::class, 'leftComment']);
-    Route::delete('/comment/{commentId}/delete', [BlogController::class, 'deleteComment']);
+    Route::post('/post/comment/store', [BlogController::class, 'leftComment']);
+    Route::delete('/comment/delete/{commentId}', [BlogController::class, 'deleteComment']);
+
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/users', [UserController::class, 'index']);
+        Route::delete('/user/delete/{commentId}', [UserController::class, 'delete']);
+    });
 });
 
 

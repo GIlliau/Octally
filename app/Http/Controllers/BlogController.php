@@ -23,17 +23,29 @@ class BlogController extends Controller
 
     public function index(Request $request)
     {
-        $this->resolvePagination($request);
-        $posts = $this->postRepository->getPostsByPopularity($this->perPage);
+        $request->validate([
+            'search' => ['sometimes', 'string', 'max:100']
+        ]);
 
-        return view('index', ['posts' => $posts]);
+        $this->resolvePagination($request);
+
+        if (!is_null($request->search)) {
+            $posts = $this->postRepository->search($request->search, $this->perPage);
+        } else {
+            $posts = $this->postRepository->getAllPosts($this->perPage);
+        }
+
+        $popularPosts = $this->postRepository->getPostsByPopularity($this->perPage);
+
+        return view('index', ['posts' => $posts, 'popularPosts' => $popularPosts]);
     }
 
     public function post(int $postId)
     {
-        $post = Post::with('comment')->where('id', $postId)->paginate($this->perPage);
+        $post = $this->postRepository->getPostPublicView($postId);
+        $comments = $post->comment()->orderBy('id', 'desc')->get();
 
-        return view('post', ['post' => $post]);
+        return view('post', ['post' => $post, 'comments' => $comments, 'user' => Auth::user()]);
     }
 
     public function getPostByUser(Request $request, int $userId)

@@ -24,6 +24,7 @@ class UpdatePostRequest extends FormRequest
         return [
             'tittle' => ['sometimes', 'string', 'max:80'],
             'text' => ['sometimes', 'string'],
+            'image' => ['sometimes', 'mimes:png,jpg'],
         ];
     }
 }

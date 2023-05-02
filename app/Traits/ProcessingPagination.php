@@ -13,7 +13,7 @@ trait ProcessingPagination
 {
     protected function resolvePagination(Request $request): void
     {
-        $this->currentPage = (int)$request->input('current_page', 1);
+        $this->currentPage = (int)$request->input('page', 1);
         $this->perPage = (int)$request->input('per_page', 15);
 
         Paginator::currentPageResolver(function () {
