@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 //Route::get('/login', );
 Route::get('/', [BlogController::class, 'index']);
-Route::get('/post/{postId}', [BlogController::class, 'post']);
+Route::get('/post/open/{postId}', [BlogController::class, 'post']);
 Route::get('/user/{userId}/post', [BlogController::class, 'post']);
 Route::middleware('auth')->group(function () {
     Route::get('/post', [HomeController::class, 'index']);

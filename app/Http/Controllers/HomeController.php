@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Interfaces\PostRepositoryInterface;
+use App\Models\Post;
+use App\Traits\UploadImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+    use UploadImage;
     private PostRepositoryInterface $postRepository;
 
     public function __construct(PostRepositoryInterface $postRepository)
@@ -24,7 +27,7 @@ class HomeController extends Controller
 
         $posts = $this->postRepository->getPostsByUser(Auth::id(), $this->perPage);
 
-        return view('posts.index');
+        return view('posts.index', ['posts' => $posts]);
     }
 
     public function create()
@@ -36,6 +39,7 @@ class HomeController extends Controller
     {
         $data = $request->validated();
 
+        $data['image'] = $this->uploadImage($request);
         $data['user_id'] = Auth::id();
 
         $this->postRepository->createPost($data);
@@ -43,9 +47,9 @@ class HomeController extends Controller
         return redirect('/post');
     }
 
-    public function edit()
+    public function edit(Post $post)
     {
-        return view('posts.edit');
+        return view('posts.edit', ['post' => $post]);
     }
 
     public function update(UpdatePostRequest $request, int $postId)
